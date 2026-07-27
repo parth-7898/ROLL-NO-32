@@ -12,9 +12,9 @@ class Student:
         print(self.name, "scored",
               self.marks,"marks.")
         
-student1 = Student("Ram", 1, "CSE", 85)
-student2 = Student("Shyam", 2, "CSE", 90)
-student3 = Student("Sita", 3, "CSE", 80)
+student1 = Student("Amit", 1, "CSE", 85)
+student2 = Student("Parth", 2, "CSE", 90)
+student3 = Student("Jeetom", 3, "CSE", 80)
 
 student1.study()
 student2.study()
