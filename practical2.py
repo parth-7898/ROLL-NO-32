@@ -1,6 +1,5 @@
 class Student:
-    school_name = "JSPM  School"
-
+    school_name = "MIT ADT UNIVRSITY"
     def __init__(self, name, marks):
         self.name = name
         self.marks = marks
