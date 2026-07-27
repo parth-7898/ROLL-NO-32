@@ -1,98 +1,85 @@
-class Book:
+class Student:
+    school_name = "JSPM  School"
 
-    def __init__(self, title, author):
-        self.title = title
-        self.author = author
-        self.is_available = True
-
-
-class Member:
-
-    def __init__(self, name):
+    def __init__(self, name, marks):
         self.name = name
-        self.issued_books = []
+        self.marks = marks
+
+    def show(self):
+        print(self.name, "scored", self.marks)
+
+    @staticmethod
+    def is_pass(marks):
+        return marks >= 40
+
+    def __str__(self):
+        return f"Student: {self.name}, Marks: {self.marks}"
 
 
-class Library:
+s1 = Student("Amit", 80)
+s2 = Student("Jeetom", 90)
 
-    def __init__(self):
-        self.book_list = []
-        self.member_list = []
+print(s1.name, s1.marks, s1.school_name)
+print(s2.name, s2.marks, s2.school_name)
 
-    def add_book(self, book):
-        self.book_list.append(book)
-        print("Book Added:", book.title)
+s1.show()
+s2.show()
 
-    def add_member(self, member):
-        self.member_list.append(member)
-        print("Member Registered:", member.name)
+print(Student.is_pass(30))
+print(Student.is_pass(85))
 
-    def issue_book(self, member, book):
-
-        if book.is_available:
-            book.is_available = False
-            member.issued_books.append(book)
-            print(book.title, "issued to", member.name)
-        else:
-            print(book.title, "is already issued.")
-
-    def submit_book(self, member, book):
-
-        if book in member.issued_books:
-            member.issued_books.remove(book)
-            book.is_available = True
-            print(book.title, "returned by", member.name)
-        else:
-            print(member.name, "has not borrowed this book.")
+print(s1)
+print(s2)
 
 
-library = Library()
+def announce(func):
+    def wrapper(*args, **kwargs):
+        print(">>> Starting...")
+        result = func(*args, **kwargs)
+        print(">>> Done!")
+        return result
+    return wrapper
 
-book1 = Book("Python Programming", "Guido van Rossum")
-book2 = Book("Java Programming", "James Gosling")
-book3 = Book("C Programming", "Dennis Ritchie")
 
-library.add_book(book1)
-library.add_book(book2)
-library.add_book(book3)
-
-print()
-
-member1 = Member("Rahul")
-member2 = Member("Priya")
-
-library.add_member(member1)
-library.add_member(member2)
-
-print()
-
-library.issue_book(member1, book1)
-library.issue_book(member2, book2)
-
-print()
-
-library.issue_book(member2, book1)
-
-print()
-
-library.submit_book(member1, book1)
-
-print()
-
-library.issue_book(member2, book1)
-
-print("\n===== Library Report =====")
-
-print("\nBook Status:")
-for book in library.book_list:
-    print(book.title, ":", book.is_available)
-
-print("\nMember Records:")
-for member in library.member_list:
-    print("\n", member.name)
-
-    if member.issued_books:
-        for book in member.issued_books:
-            print("-", book.title)
+@announce
+def check_result(student):
+    if Student.is_pass(student.marks):
+        print(student.name, "PASSED")
     else:
-        print("No books issued.")
+        print(student.name, "FAILED")
+
+
+check_result(s1)
+check_result(s2)
+
+
+class RollNumbers:
+    def __init__(self, max_roll):
+        self.max_roll = max_roll
+
+    def __iter__(self):
+        self.current = 1
+        return self
+
+    def __next__(self):
+        if self.current <= self.max_roll:
+            x = self.current
+            self.current += 1
+            return x
+        else:
+            raise StopIteration
+
+
+for roll in RollNumbers(5):
+    print("Roll No:", roll)
+
+
+def roll_numbers(max_roll):
+    current = 1
+    while current <= max_roll:
+        yield current
+        current += 1
+
+
+for roll in roll_numbers(5):
+    print("Roll No:", roll)
