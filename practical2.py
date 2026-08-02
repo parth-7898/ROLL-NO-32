@@ -1,48 +1,66 @@
-class Student:
-    school_name = "MIT ADT UNIVRSITY"
+class StudentRecord:
+    college_name = "MIT ADT University"
+
     def __init__(self, name, marks):
         self.name = name
         self.marks = marks
 
-    def show(self):
-        print(self.name, "scored", self.marks)
+    def grade(self):
+        if self.marks >= 90:
+            return "A+"
+        elif self.marks >= 75:
+            return "A"
+        elif self.marks >= 60:
+            return "B"
+        elif self.marks >= 40:
+            return "C"
+        else:
+            return "Fail"
+
+    def display_details(self):
+        print(f"Name : {self.name}")
+        print(f"Marks: {self.marks}")
+        print(f"Grade: {self.grade()}")      
+        print("-" * 30)
 
     @staticmethod
-    def is_pass(marks):
+    def check_pass(marks):
         return marks >= 40
 
     def __str__(self):
-        return f"Student: {self.name}, Marks: {self.marks}"
+        return f"Student Name: {self.name} | Marks: {self.marks} | Grade: {self.grade()}"   
 
 
-s1 = Student("Amit", 80)
-s2 = Student("Jeetom", 90)
+s1 = StudentRecord("Amit", 80)
+s2 = StudentRecord("Jeetoom", 90)
 
-print(s1.name, s1.marks, s1.school_name)
-print(s2.name, s2.marks, s2.school_name)
+print("College:", StudentRecord.college_name)
+print()
 
-s1.show()
-s2.show()
+s1.display_details()
+s2.display_details()
 
-print(Student.is_pass(30))
-print(Student.is_pass(85))
+print("Pass Status:")
+print("30 Marks :", StudentRecord.check_pass(30))
+print("85 Marks :", StudentRecord.check_pass(85))
+print()
 
 print(s1)
 print(s2)
 
 
-def announce(func):
+def result_decorator(func):
     def wrapper(*args, **kwargs):
-        print(">>> Starting...")
+        print("\n========== RESULT ==========")
         result = func(*args, **kwargs)
-        print(">>> Done!")
+        print("============================")
         return result
     return wrapper
 
 
-@announce
+@result_decorator
 def check_result(student):
-    if Student.is_pass(student.marks):
+    if StudentRecord.check_pass(student.marks):
         print(student.name, "PASSED")
     else:
         print(student.name, "FAILED")
@@ -52,7 +70,7 @@ check_result(s1)
 check_result(s2)
 
 
-class RollNumbers:
+class RollIterator:
     def __init__(self, max_roll):
         self.max_roll = max_roll
 
@@ -62,23 +80,25 @@ class RollNumbers:
 
     def __next__(self):
         if self.current <= self.max_roll:
-            x = self.current
+            roll = self.current
             self.current += 1
-            return x
+            return roll
         else:
             raise StopIteration
 
 
-for roll in RollNumbers(5):
+print("\nRoll Numbers using Iterator")
+for roll in RollIterator(5):
     print("Roll No:", roll)
 
 
-def roll_numbers(max_roll):
+def generate_roll_numbers(max_roll):
     current = 1
     while current <= max_roll:
         yield current
         current += 1
 
 
-for roll in roll_numbers(5):
+print("\nRoll Numbers using Generator")
+for roll in generate_roll_numbers(5):
     print("Roll No:", roll)
