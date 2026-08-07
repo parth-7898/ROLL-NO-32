@@ -15,7 +15,7 @@ def report_decorator(func):
 
 class Report:
 
-    company_name = "TATA COMPANY Pvt. Ltd."
+    company_name = "INFOSYS Pvt. Ltd."
 
     def __init__(self, title, author):
         self.title = title
@@ -56,9 +56,6 @@ class Report:
 
         print("Total Sections :", len(self))
 
-
-# ---------------- Main Program ----------------
-
 r1 = Report("Advanced Python Practical", "Parth")
 
 r1.add_content("Completed Experiment No. 2.")
@@ -71,7 +68,7 @@ r1.display_report()
 
 print("\nChanging Company Name...\n")
 
-Report.change_company("MIT ADT University")
+Report.change_company("MICROSOFT Pvt. Ltd.")
 
 r2 = Report("Faculty Demonstration", "Parth")
 
