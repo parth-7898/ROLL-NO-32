@@ -1,44 +1,40 @@
-def knapsack(weights, profits, capacity):
+import re
 
-    n = len(weights)
+text = """
+Contact us at support@example.com or admin@test.org.
+You can also email student123@university.edu.
+fghjkldfghjklfghjkfghjkdfhjdk,mnjkl
+fghjkl;'cfghjkdfmfhdjl;
+fgklkfdfghjkl
+"""
 
-    dp = [[0] * (capacity + 1) for _ in range(n + 1)]
+pattern = r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'
 
-    for i in range(1, n + 1):
-        for w in range(capacity + 1):
+emails = re.findall(pattern, text)
 
-            if weights[i - 1] > w:
-                dp[i][w] = dp[i - 1][w]
+print("Email addresses found:")
 
-            else:
-                dp[i][w] = max(
-                    dp[i - 1][w],
-                    profits[i - 1] + dp[i - 1][w - weights[i - 1]]
-                )
-
-    w = capacity
-    selected_items = []
-
-    for i in range(n, 0, -1):
-
-        if dp[i][w] != dp[i - 1][w]:
-            selected_items.append(i - 1)
-            w -= weights[i - 1]
-
-    selected_items.reverse()
-
-    return dp[n][capacity], selected_items
+for email in emails:
+    print(email)
 
 
-n = int(input("Enter number of items: "))
 
-weights = list(map(int, input("Enter weights: ").split()))
+'''
+import re
 
-profits = list(map(int, input("Enter profits: ").split()))
+filename = "input.txt"
 
-capacity = int(input("Enter knapsack capacity: "))
+pattern = r'\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\b'
 
-max_profit, items = knapsack(weights, profits, capacity)
+with open(filename, "r") as file:
+    text = file.read()
 
-print("Maximum Profit:", max_profit)
-print("Items in Knapsack:", items)
+emails = re.findall(pattern, text)
+
+print("Valid email addresses found:")
+
+for email in emails:
+    print(email)
+
+print("\nTotal email addresses:", len(emails))
+'''

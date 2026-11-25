@@ -1,18 +1,11 @@
-import re
+import csv
+import json
 
-text = """
-Contact us at support@example.com or admin@test.org.
-You can also email student123@university.edu.
-fghjklfdfghjklfghjkfghjkdfhjdk,mnjkl
-fghjkl;'cfghjkdfmfhdfjl;
-fgklkfdfghjkl
-"""
+with open("students.csv", "r") as csv_file:
+    csv_reader = csv.DictReader(csv_file)
+    data = list(csv_reader)
 
-pattern = r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'
+with open("students.json", "w") as json_file:
+    json.dump(data, json_file, indent=4)
 
-emails = re.findall(pattern, text)
-
-print("Email addresses found:")
-
-for email in emails:
-    print(email)
+print("CSV data successfully converted to JSON.")

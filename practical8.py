@@ -1,10 +1,15 @@
-import csv
+with open("input.txt", "r") as file:
+    lines = file.readlines()
 
-results = [['name', 'grade'],
-           ['Amit', 'A'],
-           ['Jeetom', 'A+'],]
-    
-with open('grades.csv', 'w',
-          newline='') as f:
-    writer = csv.writer(f)
-    writer.writerows(results)
+line_count = len(lines)
+first_two_lines = lines[:2]
+
+print("Total number of lines:", line_count)
+print("\nFirst two lines:")
+for line in first_two_lines:
+    print(line.strip())
+
+with open("output.txt", "w") as file:
+    file.writelines(first_two_lines)
+
+print("\nFirst two lines have been written to output.txt")

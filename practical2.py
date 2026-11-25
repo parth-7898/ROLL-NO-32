@@ -1,104 +1,79 @@
-class StudentRecord:
-    college_name = "MIT ADT University"
-
-    def __init__(self, name, marks):
-        self.name = name
-        self.marks = marks
-
-    def grade(self):
-        if self.marks >= 90:
-            return "A+"
-        elif self.marks >= 75:
-            return "A"
-        elif self.marks >= 60:
-            return "B"
-        elif self.marks >= 40:
-            return "C"
-        else:
-            return "Fail"
-
-    def display_details(self):
-        print(f"Name : {self.name}")
-        print(f"Marks: {self.marks}")
-        print(f"Grade: {self.grade()}")      
-        print("-" * 30)
-
-    @staticmethod
-    def check_pass(marks):
-        return marks >= 40
-
-    def __str__(self):
-        return f"Student Name: {self.name} | Marks: {self.marks} | Grade: {self.grade()}"   
-
-
-s1 = StudentRecord("Amit", 80)
-s2 = StudentRecord("Jeetoom", 90)
-
-print("College:", StudentRecord.college_name)
-print()
-
-s1.display_details()
-s2.display_details()
-
-print("Pass Status:")
-print("30 Marks :", StudentRecord.check_pass(30))
-print("85 Marks :", StudentRecord.check_pass(85))
-print()
-
-print(s1)
-print(s2)
-
-
-def result_decorator(func):
+def report_decorator(func):
     def wrapper(*args, **kwargs):
-        print("\n========== RESULT ==========")
-        result = func(*args, **kwargs)
-        print("============================")
-        return result
+        print("=" * 60)
+        print("           DYNAMIC REPORT GENERATOR")
+        print("=" * 60)
+
+        func(*args, **kwargs)
+
+        print("=" * 60)
+        print("             END OF REPORT")
+        print("=" * 60)
+
     return wrapper
 
 
-@result_decorator
-def check_result(student):
-    if StudentRecord.check_pass(student.marks):
-        print(student.name, "PASSED")
-    else:
-        print(student.name, "FAILED")
+class Report:
+    company_name = "ABC Technologies Pvt. Ltd."
+
+    def __init__(self, title, author):
+        self.title = title
+        self.author = author
+        self.contents = []
+
+    def add_content(self, text):
+        self.contents.append(text)
+
+    @classmethod
+    def change_company(cls, new_company):
+        cls.company_name = new_company
+
+    @staticmethod
+    def line():
+        print("-" * 60)
+
+    def __str__(self):
+        return (
+            f"Report Title : {self.title}\n"
+            f"Author       : {self.author}"
+        )
+
+    def __len__(self):
+        return len(self.contents)
+
+    @report_decorator
+    def display_report(self):
+        print("Company :", Report.company_name)
+        print(self)
+        Report.line()
+
+        print("Report Contents:")
+        for i, item in enumerate(self.contents, start=1):
+            print(f"{i}. {item}")
+
+        Report.line()
+        print("Total Sections :", len(self))
 
 
-check_result(s1)
-check_result(s2)
+r1 = Report("Advanced Python Practical Report", "Mandar Joshi")
 
+r1.add_content("Completed Experiment No. 2 successfully.")
+r1.add_content("Implemented Decorators, Class Methods, Static Methods and Magic Methods.")
+r1.add_content("Learned Object-Oriented Programming concepts.")
+r1.add_content("Report prepared by Mandar Joshi.")
 
-class RollIterator:
-    def __init__(self, max_roll):
-        self.max_roll = max_roll
+r1.display_report()
 
-    def __iter__(self):
-        self.current = 1
-        return self
+print("\nChanging Company Name...\n")
 
-    def __next__(self):
-        if self.current <= self.max_roll:
-            roll = self.current
-            self.current += 1
-            return roll
-        else:
-            raise StopIteration
+Report.change_company("MIT ADT University")
 
+r2 = Report("Faculty Practical Demonstration", "Mandar Joshi")
 
-print("\nRoll Numbers using Iterator")
-for roll in RollIterator(5):
-    print("Roll No:", roll)
+r2.add_content("Practical demonstrated successfully.")
+r2.add_content("Students understood decorators.")
+r2.add_content("Students understood class methods.")
+r2.add_content("Students understood magic methods.")
+r2.add_content("Students performed the practical successfully.")
 
-
-def generate_roll_numbers(max_roll):
-    current = 1
-    while current <= max_roll:
-        yield current
-        current += 1
-
-
-print("\nRoll Numbers using Generator")
-for roll in generate_roll_numbers(5):
-    print("Roll No:", roll)
+r2.display_report()

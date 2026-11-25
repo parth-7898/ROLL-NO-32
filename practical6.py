@@ -1,41 +1,36 @@
-def lcs(X, Y):
-    m = len(X)
-    n = len(Y)
+def knapsack(weights, profits, capacity):
+    n = len(weights)
 
-    dp = [[0] * (n + 1) for _ in range(m + 1)]
+    dp = [[0] * (capacity + 1) for _ in range(n + 1)]
 
-    for i in range(1, m + 1):
-        for j in range(1, n + 1):
-
-            if X[i - 1] == Y[j - 1]:
-                dp[i][j] = dp[i - 1][j - 1] + 1
+    for i in range(1, n + 1):
+        for w in range(capacity + 1):
+            if weights[i-1] > w:
+                dp[i][w] = dp[i-1][w]
             else:
-                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
+                dp[i][w] = max(
+                    dp[i-1][w],
+                    profits[i-1] + dp[i-1][w - weights[i-1]]
+                )
 
-    i = m
-    j = n
-    sequence = ""
+    w = capacity
+    selected_items = []
 
-    while i > 0 and j > 0:
+    for i in range(n, 0, -1):
+        if dp[i][w] != dp[i-1][w]:
+            selected_items.append(i-1)
+            w -= weights[i-1]
 
-        if X[i - 1] == Y[j - 1]:
-            sequence = X[i - 1] + sequence
-            i -= 1
-            j -= 1
+    selected_items.reverse()
 
-        elif dp[i - 1][j] > dp[i][j - 1]:
-            i -= 1
-
-        else:
-            j -= 1
-
-    return dp[m][n], sequence
+    return dp[n][capacity], selected_items
 
 
-X = input("Enter first string: ")
-Y = input("Enter second string: ")
+weights = [3, 2, 4, 5, 1]
+profits = [50, 40, 70, 80, 10]
+capacity = 7
 
-length, sequence = lcs(X, Y)
+max_profit, items = knapsack(weights, profits, capacity)
 
-print("Length of LCS:", length)
-print("Longest Common Subsequence:", sequence)
+print("Maximum Profit:", max_profit)
+print("Items in Knapsack:", items)

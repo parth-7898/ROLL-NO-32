@@ -1,80 +1,33 @@
-def report_decorator(func):
-    def wrapper(*args, **kwargs):
-        print("=" * 60)
-        print("DYNAMIC REPORT GENERATOR".center(60))
-        print("=" * 60)
-
-        func(*args, **kwargs)
-
-        print("=" * 60)
-        print("END OF REPORT".center(60))
-        print("=" * 60)
-
-    return wrapper
+class PaymentStrategy:
+    def pay(self, amount):
+        pass
 
 
-class Report:
+class CreditCardPayment(PaymentStrategy):
+    def pay(self, amount):
+        print(f"Paid ₹{amount} using Credit Card")
 
-    company_name = "INFOSYS Pvt. Ltd."
 
-    def __init__(self, title, author):
-        self.title = title
-        self.author = author
-        self.contents = []
+class PayPalPayment(PaymentStrategy):
+    def pay(self, amount):
+        print(f"Paid ₹{amount} using PayPal")
 
-    def add_content(self, text):
-        self.contents.append(text)
 
-    @classmethod
-    def change_company(cls, new_company):
-        cls.company_name = new_company
+class PaymentContext:
+    def __init__(self, strategy):
+        self.strategy = strategy
 
-    @staticmethod
-    def line():
-        print("-" * 60)
+    def set_strategy(self, strategy):
+        self.strategy = strategy
 
-    def __str__(self):
-        return f"Report Title : {self.title}\nAuthor       : {self.author}"
+    def pay(self, amount):
+        self.strategy.pay(amount)
 
-    def __len__(self):
-        return len(self.contents)
 
-    @report_decorator
-    def display_report(self):
+credit = CreditCardPayment()
+payment = PaymentContext(credit)
+payment.pay(1000)
 
-        print("Company :", Report.company_name)
-        print(self)
-
-        Report.line()
-
-        print("Report Contents:")
-
-        for i, item in enumerate(self.contents, start=1):
-            print(f"{i}. {item}")
-
-        Report.line()
-
-        print("Total Sections :", len(self))
-
-r1 = Report("Advanced Python Practical", "Parth")
-
-r1.add_content("Completed Experiment No. 2.")
-r1.add_content("Implemented Decorators.")
-r1.add_content("Implemented Class Method.")
-r1.add_content("Implemented Static Method.")
-r1.add_content("Implemented Magic Methods.")
-
-r1.display_report()
-
-print("\nChanging Company Name...\n")
-
-Report.change_company("MICROSOFT Pvt. Ltd.")
-
-r2 = Report("Faculty Demonstration", "Parth")
-
-r2.add_content("Decorator concept explained.")
-r2.add_content("Class Method explained.")
-r2.add_content("Magic Methods explained.")
-r2.add_content("Practical completed successfully.")
-
-r2.display_report()
+paypal = PayPalPayment()
+payment.set_strategy(paypal)
+payment.pay(500)
